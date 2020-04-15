@@ -1,14 +1,26 @@
 # popup_window
 
-<img src="example/screenshot/20190316_160029.gif"  height="400" alt="Screenshot"/> 
+<img src="screenshot/20190316_160029.gif"  height="400" alt="Screenshot"/> 
 
 A library to display a view like window in android native.
 ## Getting Started
 
-
+**1.Install**
+```yaml
+dependencies:
+  popup_window: ^1.0.0+1
 ```
-    PopupWindowButton(
-        offset: Offset(0, 200),
+
+**2.Import**
+
+```dart
+import 'package:popup_window/popup_window.dart';
+```
+
+**3.Usage**
+```
+PopupWindowButton(
+    offset: Offset(0, 200),
         child: Image(image: AssetImage("images/ic_share.png")),
         window: Container(
             padding: EdgeInsets.all(50),
@@ -20,7 +32,7 @@ A library to display a view like window in android native.
                 height: 50,
             ) ,
         ),
-     )
+)
 ```
 
 More detail see example: main.dart
