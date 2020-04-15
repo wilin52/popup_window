@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:popup_window_demo/popup_window.dart';
+import 'package:popup_window/popup_window.dart';
 
 void main() => runApp(MyApp());
 

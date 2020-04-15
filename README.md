@@ -1,6 +1,6 @@
-# popup_window_demo
+# popup_window
 
-<img src="screenshot/20190316_160029.gif"  height="400" alt="Screenshot"/> 
+<img src="example/screenshot/20190316_160029.gif"  height="400" alt="Screenshot"/> 
 
 A new Flutter application.
 
