@@ -2,17 +2,25 @@
 
 <img src="example/screenshot/20190316_160029.gif"  height="400" alt="Screenshot"/> 
 
-A new Flutter application.
-
+A library to display a view like window in android native.
 ## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+```
+    PopupWindowButton(
+        offset: Offset(0, 200),
+        child: Image(image: AssetImage("images/ic_share.png")),
+        window: Container(
+            padding: EdgeInsets.all(50),
+            alignment: Alignment.center,
+            color: Colors.greenAccent,
+            height: 200,
+            child: Container(
+                color: Colors.white,
+                height: 50,
+            ) ,
+        ),
+     )
+```
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+More detail see example: main.dart

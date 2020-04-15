@@ -17,18 +17,23 @@ class PopupWindowButton<T> extends StatefulWidget {
   }) : super(key: key);
 
   /// 显示按钮button
+  /// button which clicked will popup a window
   final Widget child;
 
   /// window 出现的位置。
+  /// window's position in screen
   final Offset offset;
 
   /// 阴影
+  /// shadow
   final double elevation;
 
   /// 需要显示的window
+  /// the target window
   final Widget window;
 
   /// 按钮按钮后到显示window 出现的时间
+  /// the transition duration before [window] show up
   final int duration;
 
   final MaterialType type;
