@@ -141,8 +141,6 @@ class _PopupWindowRoute<T> extends PopupRoute<T> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
-    final CurveTween opacity =
-        CurveTween(curve: const Interval(0.0, 1.0 / 3.0));
 
     return Builder(
       builder: (BuildContext context) {
@@ -152,8 +150,8 @@ class _PopupWindowRoute<T> extends PopupRoute<T> {
               child: child,
               animation: animation,
               builder: (BuildContext context, Widget child) {
-                return Opacity(
-                  opacity: opacity.evaluate(animation),
+                return FadeTransition(
+                  opacity: animation,
                   child: Material(
                     type: type,
                     elevation: elevation,
