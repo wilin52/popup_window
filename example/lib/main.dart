@@ -16,6 +16,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+const double windowHeight = 200;
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
@@ -34,18 +36,23 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         actions: <Widget>[
           PopupWindowButton(
-            offset: Offset(0, 200),
+            offset: Offset(0, windowHeight),
             child: Image(image: AssetImage("images/ic_share.png")),
             window: Container(
-              padding: EdgeInsets.all(50),
-              alignment: Alignment.center,
               color: Colors.greenAccent,
-              height: 200,
-              child: Container(
-                color: Colors.white,
-                height: 50,
-              ),
+              height: windowHeight,
             ),
+            /// not required.
+            builder: (Widget child, Animation<double> animation,
+                Animation<double> secondaryAnimation) {
+              return FadeTransition(
+                opacity: animation,
+                child: SizeTransition(
+                  sizeFactor: animation,
+                  child: child,
+                ),
+              );
+            },
           )
         ],
       ),

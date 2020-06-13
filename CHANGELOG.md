@@ -1,3 +1,7 @@
+## 1.0.0+4
+
+* Support custom animation
+
 ## 1.0.0+3
 
 * improve animation of window

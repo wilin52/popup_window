@@ -5,6 +5,9 @@ const int _windowPopupDuration = 300;
 const double _kWindowCloseIntervalEnd = 2.0 / 3.0;
 const Duration _kWindowDuration = Duration(milliseconds: _windowPopupDuration);
 
+typedef AnimatedWidgetBuilder = Widget Function(Widget child,
+    Animation<double> animation, Animation<double> secondaryAnimation);
+
 class PopupWindowButton<T> extends StatefulWidget {
   const PopupWindowButton({
     Key key,
@@ -14,6 +17,7 @@ class PopupWindowButton<T> extends StatefulWidget {
     this.elevation = 2.0,
     this.duration = 300,
     this.type = MaterialType.card,
+    this.builder,
   }) : super(key: key);
 
   /// 显示按钮button
@@ -38,6 +42,8 @@ class PopupWindowButton<T> extends StatefulWidget {
 
   final MaterialType type;
 
+  final AnimatedWidgetBuilder builder;
+
   @override
   _PopupWindowButtonState createState() {
     return _PopupWindowButtonState();
@@ -52,6 +58,7 @@ void showWindow<T>({
   int duration = _windowPopupDuration,
   String semanticLabel,
   MaterialType type,
+  AnimatedWidgetBuilder builder,
 }) {
   Navigator.push(
     context,
@@ -63,7 +70,8 @@ void showWindow<T>({
         semanticLabel: semanticLabel,
         barrierLabel:
             MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        type: type),
+        type: type,
+        builder: builder),
   );
 }
 
@@ -86,7 +94,8 @@ class _PopupWindowButtonState<T> extends State<PopupWindowButton> {
         position: position,
         duration: widget.duration,
         elevation: widget.elevation,
-        type: widget.type);
+        type: widget.type,
+        builder: widget.builder);
   }
 
   @override
@@ -108,6 +117,7 @@ class _PopupWindowRoute<T> extends PopupRoute<T> {
     this.semanticLabel,
     this.duration,
     this.type = MaterialType.card,
+    this.builder,
   });
 
   @override
@@ -127,6 +137,7 @@ class _PopupWindowRoute<T> extends PopupRoute<T> {
   final String barrierLabel;
   final int duration;
   final MaterialType type;
+  final AnimatedWidgetBuilder builder;
 
   @override
   Duration get transitionDuration =>
@@ -141,7 +152,6 @@ class _PopupWindowRoute<T> extends PopupRoute<T> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
-
     return Builder(
       builder: (BuildContext context) {
         return CustomSingleChildLayout(
@@ -150,14 +160,16 @@ class _PopupWindowRoute<T> extends PopupRoute<T> {
               child: child,
               animation: animation,
               builder: (BuildContext context, Widget child) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: Material(
-                    type: type,
-                    elevation: elevation,
-                    child: child,
-                  ),
-                );
+                return builder == null
+                    ? FadeTransition(
+                        opacity: animation,
+                        child: Material(
+                          type: type,
+                          elevation: elevation,
+                          child: child,
+                        ),
+                      )
+                    : builder(child, animation, secondaryAnimation);
               }),
         );
       },
