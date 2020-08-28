@@ -1,3 +1,7 @@
+## 1.0.0+5
+
+* Add show and dismiss callback
+
 ## 1.0.0+4
 
 * Support custom animation

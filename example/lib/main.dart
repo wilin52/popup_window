@@ -42,6 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.greenAccent,
               height: windowHeight,
             ),
+
             /// not required.
             builder: (Widget child, Animation<double> animation,
                 Animation<double> secondaryAnimation) {
@@ -52,6 +53,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: child,
                 ),
               );
+            },
+            onShow: () {
+              print('PopupWindowButton window show');
+            },
+            onDismiss: () {
+              print('PopupWindowButton window dismiss');
             },
           )
         ],

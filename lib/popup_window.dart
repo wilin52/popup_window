@@ -9,16 +9,18 @@ typedef AnimatedWidgetBuilder = Widget Function(Widget child,
     Animation<double> animation, Animation<double> secondaryAnimation);
 
 class PopupWindowButton<T> extends StatefulWidget {
-  const PopupWindowButton({
-    Key key,
-    this.child,
-    this.window,
-    this.offset = Offset.zero,
-    this.elevation = 2.0,
-    this.duration = 300,
-    this.type = MaterialType.card,
-    this.builder,
-  }) : super(key: key);
+  const PopupWindowButton(
+      {Key key,
+      this.child,
+      this.window,
+      this.offset = Offset.zero,
+      this.elevation = 2.0,
+      this.duration = 300,
+      this.type = MaterialType.card,
+      this.builder,
+      this.onShow,
+      this.onDismiss})
+      : super(key: key);
 
   /// 显示按钮button
   /// button which clicked will popup a window
@@ -44,22 +46,27 @@ class PopupWindowButton<T> extends StatefulWidget {
 
   final AnimatedWidgetBuilder builder;
 
+  final VoidCallback onShow;
+
+  final VoidCallback onDismiss;
+
   @override
   _PopupWindowButtonState createState() {
     return _PopupWindowButtonState();
   }
 }
 
-void showWindow<T>({
-  @required BuildContext context,
-  RelativeRect position,
-  @required Widget window,
-  double elevation = 8.0,
-  int duration = _windowPopupDuration,
-  String semanticLabel,
-  MaterialType type,
-  AnimatedWidgetBuilder builder,
-}) {
+void showWindow<T>(
+    {@required BuildContext context,
+    RelativeRect position,
+    @required Widget window,
+    double elevation = 8.0,
+    int duration = _windowPopupDuration,
+    String semanticLabel,
+    MaterialType type,
+    AnimatedWidgetBuilder builder,
+    VoidCallback onShow,
+    VoidCallback onDismiss}) {
   Navigator.push(
     context,
     _PopupWindowRoute<T>(
@@ -71,7 +78,9 @@ void showWindow<T>({
         barrierLabel:
             MaterialLocalizations.of(context).modalBarrierDismissLabel,
         type: type,
-        builder: builder),
+        builder: builder,
+        onShow: onShow,
+        onDismiss: onDismiss),
   );
 }
 
@@ -95,7 +104,9 @@ class _PopupWindowButtonState<T> extends State<PopupWindowButton> {
         duration: widget.duration,
         elevation: widget.elevation,
         type: widget.type,
-        builder: widget.builder);
+        builder: widget.builder,
+        onShow: widget.onShow,
+        onDismiss: widget.onDismiss);
   }
 
   @override
@@ -108,17 +119,18 @@ class _PopupWindowButtonState<T> extends State<PopupWindowButton> {
 }
 
 class _PopupWindowRoute<T> extends PopupRoute<T> {
-  _PopupWindowRoute({
-    this.position,
-    this.child,
-    this.elevation,
-    this.theme,
-    this.barrierLabel,
-    this.semanticLabel,
-    this.duration,
-    this.type = MaterialType.card,
-    this.builder,
-  });
+  _PopupWindowRoute(
+      {this.position,
+      this.child,
+      this.elevation,
+      this.theme,
+      this.barrierLabel,
+      this.semanticLabel,
+      this.duration,
+      this.type = MaterialType.card,
+      this.builder,
+      this.onShow,
+      this.onDismiss});
 
   @override
   Animation<double> createAnimation() {
@@ -138,6 +150,8 @@ class _PopupWindowRoute<T> extends PopupRoute<T> {
   final int duration;
   final MaterialType type;
   final AnimatedWidgetBuilder builder;
+  final VoidCallback onShow;
+  final VoidCallback onDismiss;
 
   @override
   Duration get transitionDuration =>
@@ -148,6 +162,18 @@ class _PopupWindowRoute<T> extends PopupRoute<T> {
 
   @override
   Color get barrierColor => null;
+
+  @override
+  bool didPop(T result) {
+    onDismiss?.call();
+    return super.didPop(result);
+  }
+
+  @override
+  TickerFuture didPush() {
+    onShow?.call();
+    return super.didPush();
+  }
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
