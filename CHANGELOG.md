@@ -1,3 +1,9 @@
+## 1.0.0+6
+
+* Support custom window show not only when button click.
+  You can call PopupWindowButton.of(context).showPopupWindow() in button builder.
+* deprecated child and window, next version will remove them and use buttonBuilder and windowBuilder instead.
+
 ## 1.0.0+5
 
 * Add show and dismiss callback

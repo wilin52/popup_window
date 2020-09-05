@@ -37,27 +37,27 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: <Widget>[
           PopupWindowButton(
             offset: Offset(0, windowHeight),
-            child: Image(image: AssetImage("images/ic_share.png")),
-            window: Container(
-              color: Colors.greenAccent,
-              height: windowHeight,
-            ),
-
-            /// not required.
-            builder: (Widget child, Animation<double> animation,
+            buttonBuilder: (BuildContext context) {
+              return PopupWindowBtn();
+            },
+            /// recommend.
+            windowBuilder: (Widget child, Animation<double> animation,
                 Animation<double> secondaryAnimation) {
               return FadeTransition(
                 opacity: animation,
                 child: SizeTransition(
                   sizeFactor: animation,
-                  child: child,
+                  child: Container(
+                    color: Colors.greenAccent,
+                    height: windowHeight,
+                  ),
                 ),
               );
             },
-            onShow: () {
+            onWindowShow: () {
               print('PopupWindowButton window show');
             },
-            onDismiss: () {
+            onWindowDismiss: () {
               print('PopupWindowButton window dismiss');
             },
           )
@@ -69,5 +69,30 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+}
+
+class PopupWindowBtn extends StatefulWidget {
+  @override
+  _PopupWindowBtnState createState() => _PopupWindowBtnState();
+}
+
+class _PopupWindowBtnState extends State<PopupWindowBtn> {
+  bool _autoShowDialog = false;
+
+  @override
+  void didChangeDependencies() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_autoShowDialog) {
+        _autoShowDialog = false;
+        PopupWindowButton.of(context).showPopupWindow();
+      }
+    });
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Image(image: AssetImage("images/ic_share.png"));
   }
 }
