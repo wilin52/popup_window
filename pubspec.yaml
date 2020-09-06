@@ -11,7 +11,7 @@ description: Display A Dialog like Android Native Window, which can display by p
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+6
+version: 1.0.0+7
 author: wilin <wilin52@163.com>
 homepage: https://github.com/wilin52/popup_window
 

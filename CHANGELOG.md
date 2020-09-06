@@ -1,3 +1,7 @@
+## 1.0.0+7
+
+* modify readme
+
 ## 1.0.0+6
 
 * Support custom window show not only when button click.

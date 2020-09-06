@@ -24,12 +24,12 @@ class PopupWindowButton<T> extends StatefulWidget {
       : super(key: key);
 
   /// 显示按钮button
-  /// button which clicked will popup a window, use instead of buttonBuilder
+  /// button which clicked will popup a window, use [buttonBuilder] instead.
   /// next version remove child;
   @deprecated
   final Widget child;
 
-  /// the builder for child,
+  /// the builder for [child],
   final WidgetBuilder buttonBuilder;
 
   /// window 出现的位置。
@@ -41,18 +41,20 @@ class PopupWindowButton<T> extends StatefulWidget {
   final double elevation;
 
   /// 需要显示的window
-  /// the target window, use instead of windowBuilder
+  /// the target window, use [windowBuilder] instead.
   /// next version remove window;
   @deprecated
   final Widget window;
+
+  /// the target window, use windowBuilder instead.
+  /// next version remove [window];
+  final AnimatedWidgetBuilder windowBuilder;
 
   /// 按钮按钮后到显示window 出现的时间
   /// the transition duration before [window] show up
   final int duration;
 
   final MaterialType type;
-
-  final AnimatedWidgetBuilder windowBuilder;
 
   final VoidCallback onWindowShow;
 
