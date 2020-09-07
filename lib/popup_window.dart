@@ -5,56 +5,37 @@ const int _windowPopupDuration = 300;
 const double _kWindowCloseIntervalEnd = 2.0 / 3.0;
 const Duration _kWindowDuration = Duration(milliseconds: _windowPopupDuration);
 
-typedef AnimatedWidgetBuilder = Widget Function(Widget child,
+typedef AnimatedWidgetBuilder = Widget Function(BuildContext context,
     Animation<double> animation, Animation<double> secondaryAnimation);
 
 class PopupWindowButton<T> extends StatefulWidget {
   const PopupWindowButton(
       {Key key,
-      this.child,
-      this.buttonBuilder,
-      this.window,
+      @required this.buttonBuilder,
+      @required this.windowBuilder,
       this.offset = Offset.zero,
-      this.elevation = 2.0,
       this.duration = 300,
-      this.type = MaterialType.card,
-      this.windowBuilder,
       this.onWindowShow,
       this.onWindowDismiss})
-      : super(key: key);
+      : assert(buttonBuilder != null && windowBuilder != null),
+        super(key: key);
 
   /// 显示按钮button
-  /// button which clicked will popup a window, use [buttonBuilder] instead.
-  /// next version remove child;
-  @deprecated
-  final Widget child;
-
-  /// the builder for [child],
+  /// the builder for child,
+  /// button which clicked will popup a window
   final WidgetBuilder buttonBuilder;
 
   /// window 出现的位置。
-  /// window's position in screen
+  /// where window is in relation to button.
   final Offset offset;
 
-  /// 阴影
-  /// shadow
-  final double elevation;
-
-  /// 需要显示的window
-  /// the target window, use [windowBuilder] instead.
-  /// next version remove window;
-  @deprecated
-  final Widget window;
-
-  /// the target window, use windowBuilder instead.
-  /// next version remove [window];
-  final AnimatedWidgetBuilder windowBuilder;
-
   /// 按钮按钮后到显示window 出现的时间
-  /// the transition duration before [window] show up
+  /// the transition duration before [buttonBuilder] show up
   final int duration;
 
-  final MaterialType type;
+  /// 需要显示的window
+  /// the target window
+  final AnimatedWidgetBuilder windowBuilder;
 
   final VoidCallback onWindowShow;
 
@@ -75,25 +56,19 @@ class PopupWindowButton<T> extends StatefulWidget {
 void showWindow<T>(
     {@required BuildContext context,
     RelativeRect position,
-    @required Widget window,
-    double elevation = 8.0,
     int duration = _windowPopupDuration,
     String semanticLabel,
-    MaterialType type,
-    AnimatedWidgetBuilder windowBuilder,
+    @required AnimatedWidgetBuilder windowBuilder,
     VoidCallback onWindowShow,
     VoidCallback onWindowDismiss}) {
   Navigator.push(
     context,
     _PopupWindowRoute<T>(
         position: position,
-        child: window,
-        elevation: elevation,
         duration: duration,
         semanticLabel: semanticLabel,
         barrierLabel:
             MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        type: type,
         windowBuilder: windowBuilder,
         onWindowShow: onWindowShow,
         onWindowDismiss: onWindowDismiss),
@@ -115,11 +90,8 @@ class _PopupWindowButtonState<T> extends State<PopupWindowButton> {
 
     showWindow<T>(
         context: context,
-        window: widget.window,
         position: position,
         duration: widget.duration,
-        elevation: widget.elevation,
-        type: widget.type,
         windowBuilder: widget.windowBuilder,
         onWindowShow: widget.onWindowShow,
         onWindowDismiss: widget.onWindowDismiss);
@@ -131,7 +103,7 @@ class _PopupWindowButtonState<T> extends State<PopupWindowButton> {
         state: this,
         child: InkWell(
           onTap: showPopupWindow,
-          child: widget.buttonBuilder?.call(context) ?? widget.child,
+          child: widget.buttonBuilder?.call(context),
         ));
   }
 }
@@ -139,13 +111,9 @@ class _PopupWindowButtonState<T> extends State<PopupWindowButton> {
 class _PopupWindowRoute<T> extends PopupRoute<T> {
   _PopupWindowRoute(
       {this.position,
-      this.child,
-      this.elevation,
-      this.theme,
       this.barrierLabel,
       this.semanticLabel,
       this.duration,
-      this.type = MaterialType.card,
       this.windowBuilder,
       this.onWindowShow,
       this.onWindowDismiss});
@@ -159,14 +127,10 @@ class _PopupWindowRoute<T> extends PopupRoute<T> {
   }
 
   final RelativeRect position;
-  final Widget child;
-  final double elevation;
-  final ThemeData theme;
   final String semanticLabel;
   @override
   final String barrierLabel;
   final int duration;
-  final MaterialType type;
   final AnimatedWidgetBuilder windowBuilder;
   final VoidCallback onWindowShow;
   final VoidCallback onWindowDismiss;
@@ -196,27 +160,13 @@ class _PopupWindowRoute<T> extends PopupRoute<T> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
-    return Builder(
-      builder: (BuildContext context) {
-        return CustomSingleChildLayout(
-          delegate: _PopupWindowLayout(position),
-          child: AnimatedBuilder(
-              child: child,
-              animation: animation,
-              builder: (BuildContext context, Widget child) {
-                return windowBuilder == null
-                    ? FadeTransition(
-                        opacity: animation,
-                        child: Material(
-                          type: type,
-                          elevation: elevation,
-                          child: child,
-                        ),
-                      )
-                    : windowBuilder(child, animation, secondaryAnimation);
-              }),
-        );
-      },
+    return CustomSingleChildLayout(
+      delegate: _PopupWindowLayout(position),
+      child: AnimatedBuilder(
+          animation: animation,
+          builder: (BuildContext context, Widget child) {
+            return windowBuilder(context, animation, secondaryAnimation);
+          }),
     );
   }
 }

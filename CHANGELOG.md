@@ -1,6 +1,7 @@
-## 1.0.0+7
+## 1.1.0
 
-* modify readme
+* remove deprecated child and window, use buttonBuilder and windowBuilder instead.
+* remove unused code
 
 ## 1.0.0+6
 

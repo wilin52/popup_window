@@ -40,8 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
             buttonBuilder: (BuildContext context) {
               return PopupWindowBtn();
             },
-            /// recommend.
-            windowBuilder: (Widget child, Animation<double> animation,
+            windowBuilder: (BuildContext context, Animation<double> animation,
                 Animation<double> secondaryAnimation) {
               return FadeTransition(
                 opacity: animation,
