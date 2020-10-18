@@ -1,3 +1,7 @@
+## 1.1.1
+
+* support flutter 1.12.
+
 ## 1.1.0
 
 * remove deprecated child and window, use buttonBuilder and windowBuilder instead.

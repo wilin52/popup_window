@@ -8,7 +8,7 @@ A library to display a view like window in android native.
 **1.Install**
 ```yaml
 dependencies:
-  popup_window: ^1.1.0
+  popup_window: ^1.1.1
 ```
 
 **2.Import**
@@ -19,6 +19,18 @@ import 'package:popup_window/popup_window.dart';
 
 **3.Usage**
 ```
+
+/// call directly
+showWindow<T>(
+        context: context,
+        position: position, /// RelativeRect
+        duration: widget.duration,
+        windowBuilder: widget.windowBuilder,
+        onWindowShow: widget.onWindowShow,
+        onWindowDismiss: widget.onWindowDismiss);
+
+or
+
 /// windowHeigh = 200;
 PopupWindowButton(
   offset: Offset(0, windowHeight),

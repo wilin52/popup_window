@@ -48,7 +48,7 @@ class PopupWindowButton<T> extends StatefulWidget {
 
   static _PopupWindowButtonState of(BuildContext context) {
     final _PopupWindowScope scope =
-        context.inheritFromWidgetOfExactType(_PopupWindowScope);
+        context.dependOnInheritedWidgetOfExactType<_PopupWindowScope>();
     return scope?.state;
   }
 }
