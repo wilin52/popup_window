@@ -1,3 +1,6 @@
+## 1.1.2
+* support flutter 2.0, upgrade dart to 2.10.0
+
 ## 1.1.1
 
 * support flutter 1.12.

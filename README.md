@@ -8,7 +8,7 @@ A library to display a view like window in android native.
 **1.Install**
 ```yaml
 dependencies:
-  popup_window: ^1.1.1
+  popup_window: ^1.1.2
 ```
 
 **2.Import**
